@@ -2,7 +2,7 @@
 Hax / Woiden 站长时不时的把机器人验证调得很难，于是续期非常容易失败。
 那么把搭梯子的脚本简单化
 ```
-apt update && apt install -y curl && bash <(curl -L https://github.com/crazypeace/V2ray_VLESS_WebSocket_TLS_CaddyV2/raw/main/install.sh) 你的域名 6 你的UUID 你的path
+apt update && apt install -y curl && bash <(curl -L https://github.com/l13978460/V2ray_VLESS_WebSocket_TLS_CaddyV2/raw/main/install.sh) 你的域名 6 你的UUID 你的path
 ```
 跑这条命令之前，把CDN关闭。跑完之后再把CDN打开。
 这样搭出来的梯子，你的翻墙客户端节点信息不用改。
@@ -14,9 +14,21 @@ apt update && apt install -y curl && bash <(curl -L https://github.com/crazypeac
 https://github.com/v2fly/fhs-install-v2ray/issues/243
 
 # 说明
+手机走数据流量有IPv6，用你的手机流量访问 http://test-ipv6.com/ 测试一下。
+要有个SSH工具。iOS可以用 Termius 安卓可以用  JuiceSSH (官方网站changelog)
+
+创建访问 https://hax.co.id/ 点击左上角 "三" - Register
+ 点击机器人的名字，发送 /getid 给机器人，就会得到你的ID，将其填到此页面内。点击"Submit"
+接收验证码，填写到页面中，输入你的账户密码。点击"Submit"。登录账户（login）输入账户密码，机器人验证。点击 "三" - "VPS" - "Create VPS"
+数据中心随便选，不是OPENVZ的就行，操作系统推荐 Debian 11，root密码自己定一个，VPS目的随便选，勾上一堆"我同意"，再通过一下人机验证。点击 "CREATE VPS"
+过几分钟去看 VPS - VPS Info。把你的 VPS 的 IPv6 地址记下来。
+
+申请Hax提供的免费域名，点击 DNS Pointing CF。Domain Name 随便选（不成功就换一个），CF Proxy - No，DNS Name - 数字字母组合随便弄一个，IPv6 Address - 你的VPS的IPv6地址，通过人机验证，点击 Create DNS。记下域名
+
+手机SSH登录，打开 Termius，进入 Host。右上角的 "+" 号，new Host。Alias随便填，Hostname 填 VPS 的 IPv6 地址，Username 填 root，Password 填 root 密码 (Create VPS那一步填的密码)，点击 "Save".打开保存的host按指示走
+
 这个一键脚本超级简单。有效语句11行(其中BBR 5行, 安装V2Ray 1行, 安装Caddy 5行)+Caddy配置文件15行(其中你需要修改4行)+V2Ray配置文件89行(其中你需要修改2行), 其它都是用来检验小白输入错误参数或者搭建条件不满足的。
 
-你如果不放心开源的脚本，你可以自己执行那11行有效语句，再修改104行配置文件中的6行，也能达到一样的效果。
 
 # 一键执行
 ```
@@ -24,10 +36,14 @@ apt update
 apt install -y curl
 ```
 ```
-bash <(curl -L https://github.com/crazypeace/V2ray_VLESS_WebSocket_TLS_CaddyV2/raw/main/install.sh)
+bash <(curl -L https://github.com/l13978460/V2ray_VLESS_WebSocket_TLS_CaddyV2/raw/main/install.sh)
 ```
+总共三条命令，最后按提示输入，域名填刚申请的，ipv6那里选6，其它可以默认，最终得到一个vless://链接。利用warp给纯IPv6的小鸡添加IPv4对外访问的能力，回车继续直到结束，或者输入命令 
+bash <(curl -fsSL git.io/warp.sh) 4
 
-脚本中很大部分都是在校验用户的输入。其实照着下面的内容自己配置就行了。
+回到前面添加域名的那里dns-pointing-cf（检查登录状态），先删除CF Proxy为No的那条DNS，再申请一个CF Proxy为Yes的DNS，注意只有CF Proxy为Yes，其它与之前的保持一致。
+（结束）搬运这些字只是为自己方便看不用到处翻，一次成功。其它问题看https://zelikk.blogspot.com/（已墙）
+
 
 # 打开BBR
 ```
